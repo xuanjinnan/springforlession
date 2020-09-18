@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 创建 Bean 的三种方式 -->
+    <!--1.反射创建 Bean -->
+    <bean id="helloWorld"
+          class="com.pactera.ioc.bean.HelloWorld"/>
+
+    <!--2.静态工厂方法创建 Bean -->
+    <bean id="staticFactoryMethodService"
+          class="com.pactera.ioc.bean.StaticFactoryMethodService"
+          factory-method="createInstance"/>
+    <!--3.实例工厂方法创建 Bean -->
+    <bean id="instanceFactoryMethodLocator" class="com.pactera.ioc.bean.InstanceFactoryMethodLocator"/>
+    <bean id="instatnceFactoryMethodService"
+          factory-bean="instanceFactoryMethodLocator"
+          factory-method="createInstance"/>
+
+    <!--依赖关系注入的三种方式-->
+    <!--1.构造依赖注入-->
+    <bean id="exampleBean" class="com.pactera.ioc.di.ExampleBean">
+        <constructor-arg>
+        <ref bean="anotherExampleBean"/></constructor-arg>
+        <constructor-arg ref="yetAnotherBean"/>
+        <constructor-arg type="int" value="1"/></bean>
+    <!--2.静态工厂方法注入，实例工厂方法注入略-->
+    <bean id="exampleBean2" class="com.pactera.ioc.di.ExampleBean2"
+          factory-method="createInstance">
+        <constructor-arg ref="anotherExampleBean"/>
+        <constructor-arg ref="yetAnotherBean"/>
+        <constructor-arg value="1"/>
+    </bean>
+    <bean id="anotherExampleBean" class="com.pactera.ioc.di.AnotherBean"/>
+    <bean id="yetAnotherBean" class="com.pactera.ioc.di.YetAnotherBean"/>
+    <!--3.Setter 方法注入-->
+    <bean id="exampleBean3" class="com.pactera.ioc.di.ExampleBean3">
+        <property name="beanOne"><ref bean="anotherExampleBean"/></property>
+        <property name="beanTwo" ref="yetAnotherBean"/>
+        <property name="integerProperty" value="1"/></bean>
+</beans>
